@@ -5,17 +5,17 @@ GET  http://localhost:5094
 GET http://localhost:5094/games
 
 ### get specific game details
-GET http://localhost:5094/games/1
+GET http://localhost:5094/games/5
 
 ### post new games
 POST http://localhost:5094/games
 Content-Type: application/json
 
 {
-    "name": "Stardew Valley",
+    "name": "Final Fantasy XIV",
     "genreId": 2,
-    "price": 5.99,
-    "releaseDate": "2016-02-26"
+    "price": 59.99,
+    "releaseDate": "2010-09-30"
 }
 
 ### update a game
@@ -24,10 +24,10 @@ Content-Type: application/json
 
 {
     "name": "Tekken 8",
-    "genre": "Fighting",
+    "genreId": 1,
     "price": 28.55,
     "releaseDate": "2024-02-13"
 }
 
 ### delete a game
-DELETE  http://localhost:5094/games/2
+DELETE  http://localhost:5094/games/7
