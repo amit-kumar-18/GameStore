@@ -1,0 +1,171 @@
+# ===========================
+# Visual Studio
+# ===========================
+
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.dbmdl
+*.log
+
+# Build folders
+bin/
+obj/
+artifacts/
+out/
+dist/
+publish/
+TestResults/
+*.tmp
+*.tmp_proj
+*.pidb
+*.svclog
+
+# Cache
+*.cache
+*.VC.db
+*.VC.VC.opendb
+ipch/
+
+# Debug/Release folders
+[Dd]ebug*/
+[Rr]elease*/
+
+# User settings and local files
+*.userprefs
+*.sdf
+*.opendb
+*.opensdf
+*.ncb
+*.aps
+*.opt
+*.gpState
+
+# Others
+*.pfx
+*.publishsettings
+*.plg
+*.tli
+*.tlh
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.sbr
+*.rsp
+*.tlb
+*.vspscc
+*.vssscc
+*.bim.layout
+*.bim_*.settings
+
+# Click-Once publish
+publish/
+*.publishproj
+*.pubxml
+*.azurePubxml
+PublishScripts/
+
+# Logs
+*.log
+
+# NuGet
+*.nupkg
+*.nuget.props
+*.nuget.targets
+**/packages/*
+!**/packages/build/
+
+# Entity Framework (optional)
+#Migrations/
+
+# ===========================
+# SQLite files
+# ===========================
+
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+
+# ===========================
+# JetBrains Rider / CodeRush
+# ===========================
+
+.idea/
+.cr/
+*.sln.iml
+
+# ===========================
+# VS Code
+# ===========================
+
+.vscode/
+
+# ===========================
+# Node & Frontend
+# ===========================
+
+node_modules/
+wwwroot/lib/
+ClientApp/node_modules/
+ClientApp/dist/
+
+# ===========================
+# Environment / Secrets
+# ===========================
+
+.env
+.env.*
+
+# ===========================
+# Coverage & Testing
+# ===========================
+
+*.coverage
+*.coveragexml
+*.coveragejson
+*.lcov
+coverage/
+TestResult.xml
+*.VisualState.xml
+_Chutzpah*
+*.mm.*
+AutoTest.Net/
+*.dotCover
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# ===========================
+# Azure / Cloud / Others
+# ===========================
+
+csx/
+*.build.csdef
+ecf/
+rcf/
+AppPackages/
+BundleArtifacts/
+Package.StoreAssociation.xml
+_pkginfo.txt
+
+# ===========================
+# Backup & Upgrade Reports
+# ===========================
+
+_UpgradeReport_Files/
+Backup*/
+UpgradeLog*.XML
+UpgradeLog*.htm
+
+# ===========================
+# Ignore EF Core Migrations (if not tracking schema in Git)
+# ===========================
+
+Migrations/
