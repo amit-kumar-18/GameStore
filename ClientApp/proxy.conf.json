@@ -1,0 +1,10 @@
+{
+  "/games": {
+    "target": "http://localhost:5094",
+    "secure": false
+  },
+  "/genre": {
+    "target": "http://localhost:5094",
+    "secure": false
+  }
+}

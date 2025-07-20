@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Genre</th>
+      <th>Price</th>
+      <th>Release Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let game of games">
+      <td>{{ game.id }}</td>
+      <td>{{ game.name }}</td>
+      <td>{{ game.genre }}</td>
+      <td>{{ game.price }}</td>
+      <td>{{ game.releaseDate }}</td>
+    </tr>
+  </tbody>
+</table>
