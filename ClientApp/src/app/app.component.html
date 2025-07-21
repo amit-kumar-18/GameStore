@@ -1,5 +1,13 @@
-<h1>🎮 Game Store</h1>
-<nav>
-  <a routerLink="/games" (click)="onClick()">Games</a>
-</nav>
+<header class="header-bar">
+  <div class="logo-title">
+    <img src="gamestore-logo.png" alt="Logo" class="logo" />
+    <h1>GameStore</h1>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/games">Games</a>
+    <a routerLink="/addGame">Add Game</a>
+  </nav>
+</header>
+
 <router-outlet></router-outlet>

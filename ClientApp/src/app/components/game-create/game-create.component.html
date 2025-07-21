@@ -1,0 +1,15 @@
+<form [formGroup]="gameForm" (ngSubmit)="submit()">
+  <input formControlName="name" placeholder="Game Name" />
+
+  <select formControlName="genreId">
+    <option value="" disabled>Select Genre</option>
+    <option *ngFor="let genre of genres" [value]="genre.id">
+      {{ genre.name }}
+    </option>
+  </select>
+
+  <input formControlName="price" type="number" placeholder="Price" />
+  <input formControlName="releaseDate" type="date" />
+
+  <button type="submit">Save Game</button>
+</form>
