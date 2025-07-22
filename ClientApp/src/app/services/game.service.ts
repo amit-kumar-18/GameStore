@@ -23,8 +23,8 @@ export class GameService {
   }
 
   // GET /games/#id
-  getGame(id: number): Observable<GameDetails> {
-    return this.http.get<GameDetails>(`${this.baseUrl}/${id}`);
+  getGame(id: number): Observable<GameUpdate> {
+    return this.http.get<GameUpdate>(`${this.baseUrl}/${id}`);
   }
 
   // POST /game
@@ -34,7 +34,7 @@ export class GameService {
 
   // PUT /game/#id
   updateGame(game: GameUpdate, id: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}\${id}`, game);
+    return this.http.put<void>(`${this.baseUrl}/${id}`, game);
   }
 
   // DELETE /game/#id

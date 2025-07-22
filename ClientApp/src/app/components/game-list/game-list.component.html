@@ -6,6 +6,8 @@
       <th>Genre</th>
       <th>Price</th>
       <th>Release Date</th>
+      <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +17,12 @@
       <td>{{ game.genre }}</td>
       <td>{{ game.price }}</td>
       <td>{{ game.releaseDate }}</td>
+      <td>
+        <button (click)="editGame(game.id)">&#9998;</button>
+      </td>
+      <td>
+        <button (click)="deleteGame(game.id)">&#128465;</button>
+      </td>
     </tr>
   </tbody>
 </table>

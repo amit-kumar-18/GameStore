@@ -3,31 +3,35 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  Validators,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
-import { GameCreate, GenreDetails } from '../../models/game.model';
+import { GenreDetails, GameCreate, GameUpdate } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-game-create',
+  selector: 'app-game-update',
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './game-create.component.html',
-  styleUrl: './game-create.component.css',
+  templateUrl: '../game-create/game-create.component.html',
+  styleUrl: '../game-create/game-create.component.css',
 })
-export class GameCreateComponent implements OnInit {
+export class GameUpdateComponent implements OnInit {
   gameForm!: FormGroup;
   genres: GenreDetails[] = [];
-  formTitle = 'Add Game';
+  gameId!: number;
+  formTitle = 'Edit Game';
 
   constructor(
     private fb: FormBuilder,
-    private gameService: GameService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
+    private gameService: GameService
   ) {}
 
   ngOnInit(): void {
+    this.gameId = Number(this.route.snapshot.paramMap.get('id'));
+
     this.gameForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       genreId: ['', Validators.required],
@@ -37,7 +41,9 @@ export class GameCreateComponent implements OnInit {
       ],
       releaseDate: ['', Validators.required],
     });
+
     this.loadGenres();
+    this.loadGameDetails();
   }
 
   loadGenres(): void {
@@ -46,6 +52,17 @@ export class GameCreateComponent implements OnInit {
 
   showGames(): void {
     this.router.navigate(['/games']);
+  }
+
+  loadGameDetails(): void {
+    this.gameService.getGame(this.gameId).subscribe((game: GameUpdate) => {
+      this.gameForm.patchValue({
+        name: game.name,
+        genreId: game.genreId,
+        price: game.price,
+        releaseDate: game.releaseDate,
+      });
+    });
   }
 
   submit(): void {
@@ -57,8 +74,8 @@ export class GameCreateComponent implements OnInit {
         releaseDate: this.gameForm.value.releaseDate,
       };
 
-      this.gameService.addGame(game).subscribe(() => {
-        alert('Game added successfully');
+      this.gameService.updateGame(game, this.gameId).subscribe(() => {
+        alert('Game Updated successfully');
         this.gameForm.reset();
       });
     }

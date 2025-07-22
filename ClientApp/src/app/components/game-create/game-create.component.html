@@ -1,15 +1,47 @@
-<form [formGroup]="gameForm" (ngSubmit)="submit()">
-  <input formControlName="name" placeholder="Game Name" />
+<h2>{{ formTitle }}</h2>
 
-  <select formControlName="genreId">
+<form [formGroup]="gameForm" (ngSubmit)="submit()">
+  <input
+    formControlName="name"
+    placeholder="Game Name"
+    [class.invalid]="
+      gameForm.get('name')?.invalid && gameForm.get('name')?.touched
+    "
+  />
+
+  <select
+    formControlName="genreId"
+    [class.invalid]="
+      gameForm.get('genreId')?.invalid && gameForm.get('genreId')?.touched
+    "
+  >
     <option value="" disabled>Select Genre</option>
     <option *ngFor="let genre of genres" [value]="genre.id">
       {{ genre.name }}
     </option>
   </select>
 
-  <input formControlName="price" type="number" placeholder="Price" />
-  <input formControlName="releaseDate" type="date" />
+  <input
+    formControlName="price"
+    type="number"
+    placeholder="Price"
+    [class.invalid]="
+      gameForm.get('price')?.invalid && gameForm.get('price')?.touched
+    "
+  />
 
-  <button type="submit">Save Game</button>
+  <input
+    formControlName="releaseDate"
+    type="date"
+    [class.invalid]="
+      gameForm.get('releaseDate')?.invalid &&
+      gameForm.get('releaseDate')?.touched
+    "
+  />
+
+  <button type="submit" [disabled]="gameForm.invalid">
+    {{ formTitle.includes("Edit") ? "Update Game" : "Add Game" }}
+  </button>
 </form>
+
+<button type="button" (click)="showGames()">Go Back</button>
