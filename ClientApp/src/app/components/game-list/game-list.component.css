@@ -1,3 +1,55 @@
+.filters {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.filters input[type="text"] {
+  flex: 1 1 60%;
+  min-width: 200px;
+  border: 1px solid #004d40;
+}
+
+.filters input[type="text"]::placeholder {
+  font-style: italic;
+}
+
+.filters select,
+.filters input[type="number"] {
+  flex: 1 1 auto;
+  min-width: 120px;
+  -moz-appearance: textfield; /* for firefox */
+}
+
+/* hiding the arrows on input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.filters input,
+.filters select {
+  padding: 8px;
+  border: 1px solid #00796b;
+  border-radius: 4px;
+}
+
+.filters button {
+  background-color: #00796b;
+  color: white;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.filters button:hover {
+  background-color: #004d40;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

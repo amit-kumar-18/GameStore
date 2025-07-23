@@ -1,3 +1,27 @@
+<div class="filters">
+  <input
+    type="text"
+    [(ngModel)]="searchTerm"
+    (ngModelChange)="applyFilters()"
+    placeholder="Search by Game"
+  />
+
+  <select [(ngModel)]="selectedGenre" (change)="applyFilters()">
+    <option value="">All Genres</option>
+    <option *ngFor="let genre of genres" [value]="genre.name">
+      {{ genre.name }}
+    </option>
+  </select>
+
+  <input
+    type="number"
+    [(ngModel)]="maxPrice"
+    (ngModelChange)="applyFilters()"
+    placeholder="Max Price"
+  />
+  <button type="button" (click)="resetFilters()">Reset Filters</button>
+</div>
+
 <table>
   <thead>
     <tr>
@@ -11,17 +35,17 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let game of games">
+    <tr *ngFor="let game of filteredGames">
       <td>{{ game.id }}</td>
       <td>{{ game.name }}</td>
       <td>{{ game.genre }}</td>
       <td>{{ game.price }}</td>
       <td>{{ game.releaseDate }}</td>
       <td>
-        <button (click)="editGame(game.id)">&#9998;</button>
+        <button title="Edit Game" (click)="editGame(game.id)">✏️</button>
       </td>
       <td>
-        <button (click)="deleteGame(game.id)">&#128465;</button>
+        <button title="Delete Game" (click)="deleteGame(game.id)">🗑️</button>
       </td>
     </tr>
   </tbody>
