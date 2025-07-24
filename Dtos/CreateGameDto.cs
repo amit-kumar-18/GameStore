@@ -6,5 +6,8 @@ public record class CreateGameDto(
     [Required][StringLength(50)] string Name,
     int GenreId,
     [Range(1, 500)] decimal Price,
-    DateOnly ReleaseDate
+    DateOnly ReleaseDate,
+    string? ImageUrl,
+    string? Description,
+    string? Publisher
 );

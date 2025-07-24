@@ -1,7 +1,9 @@
 using GameStore.Api.Data;
 using GameStore.Api.Dtos;
 using GameStore.Api.Entities;
+using GameStore.Api.Helper;
 using GameStore.Api.Mapping;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GameStore.Api.Endpoints;
@@ -32,9 +34,20 @@ public static class GamesEndpoints
         }).WithName(GetGameEndpointName);
 
         // POST /games
-        group.MapPost("/", async (CreateGameDto newGame, GameStoreContext dbContext) =>
+        group.MapPost("/", async ([FromForm] CreateGameWithImageDto dto, GameStoreContext dbContext) =>
         {
-            Game game = newGame.ToEntity();
+            string? imageUrl = null;
+
+            if (dto.Image is not null)
+            {
+                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
+                if (error is not null)
+                    return error;
+
+                imageUrl = url;
+            }
+
+            var game = dto.ToEntity(imageUrl);
 
             dbContext.Games.Add(game);
             await dbContext.SaveChangesAsync();
@@ -44,31 +57,47 @@ public static class GamesEndpoints
                 new { id = game.Id },
                 game.ToGameDetailsDto()
             );
-        });
+        }).DisableAntiforgery();
 
-        // PUT /games/id
-        group.MapPut("/{id}", async (int id, UpdateGameDto updatedGame, GameStoreContext dbContext) =>
+        // PUT /games/{id}
+        group.MapPut("/{id}", async (int id, [FromForm] UpdateGameWithImageDto dto, GameStoreContext dbContext) =>
         {
             var existingGame = await dbContext.Games.FindAsync(id);
             if (existingGame is null) return Results.NotFound();
 
-            dbContext.Entry(existingGame)
-                     .CurrentValues
-                     .SetValues(updatedGame.ToEntity(id));
+            string? imageUrl = null;
 
+            if (dto.Image is not null)
+            {
+                FileHelpers.DeleteImage(existingGame.ImageUrl);
+
+                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
+                if (error is not null)
+                    return error;
+
+                imageUrl = url;
+            }
+
+            existingGame.UpdateEntity(dto, imageUrl);
+            await dbContext.SaveChangesAsync();
+
+            return Results.NoContent();
+        }).DisableAntiforgery();
+
+        // DELETE /games/id
+        group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
+        {
+            var game = await dbContext.Games.FindAsync(id);
+            if (game is null) return Results.NotFound();
+
+            FileHelpers.DeleteImage(game.ImageUrl); // 🔥 Clean and reusable
+
+            dbContext.Games.Remove(game);
             await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
         });
 
-        // DELETE /games/id
-        group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
-        {
-            await dbContext.Games.Where(game => game.Id == id)
-                           .ExecuteDeleteAsync();
-
-            return Results.NoContent();
-        });
 
         return group;
     }

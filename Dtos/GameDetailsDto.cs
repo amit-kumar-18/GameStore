@@ -5,5 +5,10 @@ public record class GameDetailsDto(
     string Name,
     int GenreId,
     decimal Price,
-    DateOnly ReleaseDate
+    DateOnly ReleaseDate,
+    string? ImageUrl,
+    string? Description,
+    string? Publisher,
+    DateTime CreatedAt,
+    DateTime? UpdatedAt
 );

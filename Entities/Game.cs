@@ -13,4 +13,14 @@ public class Game
     public decimal Price { get; set; }
 
     public DateOnly ReleaseDate { get; set; }
+
+    public string? ImageUrl { get; set; }
+
+    public string? Description { get; set; }
+
+    public string? Publisher { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+    public DateTime? UpdatedAt { get; set; }
 }
