@@ -37,7 +37,7 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ###
-PUT http://localhost:5094/games/2
+PUT http://localhost:5094/games/4
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundaryXyz123
 
 ------WebKitFormBoundaryXyz123
@@ -73,4 +73,4 @@ Content-Type: image/jpeg
 
 
 ###
-DELETE http://localhost:5094/games/
+DELETE http://localhost:5094/games/3

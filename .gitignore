@@ -17,6 +17,8 @@ artifacts/
 out/
 dist/
 publish/
+Logs/
+wwwroot/
 TestResults/
 *.tmp
 *.tmp_proj

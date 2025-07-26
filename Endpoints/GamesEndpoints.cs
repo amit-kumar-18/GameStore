@@ -34,23 +34,40 @@ public static class GamesEndpoints
         }).WithName(GetGameEndpointName);
 
         // POST /games
-        group.MapPost("/", async ([FromForm] CreateGameWithImageDto dto, GameStoreContext dbContext) =>
+        group.MapPost("/", async (
+            [FromForm] CreateGameWithImageDto dto,
+            GameStoreContext dbContext,
+            ILogger<Game> logger
+            ) =>
         {
+            logger.LogInformation("Creating Game: {Name}", dto.Name);
             string? imageUrl = null;
 
             if (dto.Image is not null)
             {
                 var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
                 if (error is not null)
+                {
+                    logger.LogWarning("Image upload failed for game: {Name}", dto.Name);
                     return error;
+                }
 
                 imageUrl = url;
             }
 
             var game = dto.ToEntity(imageUrl);
-
             dbContext.Games.Add(game);
-            await dbContext.SaveChangesAsync();
+
+            try
+            {
+                await dbContext.SaveChangesAsync();
+                logger.LogInformation("Game created: {Name}", dto.Name);
+            }
+            catch (DbUpdateException error)
+            {
+                logger.LogError(error, "DB error while saving game: {Name}", dto.Name);
+                return Results.Problem("A database error occurred. Please try again.");
+            }
 
             return Results.CreatedAtRoute(
                 GetGameEndpointName,
@@ -60,8 +77,14 @@ public static class GamesEndpoints
         }).DisableAntiforgery();
 
         // PUT /games/{id}
-        group.MapPut("/{id}", async (int id, [FromForm] UpdateGameWithImageDto dto, GameStoreContext dbContext) =>
+        group.MapPut("/{id}", async (
+            int id,
+            [FromForm] UpdateGameWithImageDto dto,
+            GameStoreContext dbContext,
+            ILogger<Game> logger
+            ) =>
         {
+            logger.LogInformation("Updating game: {Name}", dto.Name);
             var existingGame = await dbContext.Games.FindAsync(id);
             if (existingGame is null) return Results.NotFound();
 
@@ -73,27 +96,54 @@ public static class GamesEndpoints
 
                 var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
                 if (error is not null)
+                {
+                    logger.LogWarning("Image upload failed for game: {Name}", dto.Name);
                     return error;
+                }
 
                 imageUrl = url;
             }
 
             existingGame.UpdateEntity(dto, imageUrl);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbContext.SaveChangesAsync();
+                logger.LogInformation("Game updated: {Name}", dto.Name);
+            }
+            catch (DbUpdateException error)
+            {
+                logger.LogError(error, "DB error while updating game: {Name}", dto.Name);
+                return Results.Problem("A database error occurred. Please try again.");
+            }
 
             return Results.NoContent();
         }).DisableAntiforgery();
 
         // DELETE /games/id
-        group.MapDelete("/{id}", async (int id, GameStoreContext dbContext) =>
+        group.MapDelete("/{id}", async (
+            int id,
+            GameStoreContext dbContext,
+            ILogger<Game> logger
+            ) =>
         {
+            logger.LogInformation("Deleting Game: {Id}", id);
             var game = await dbContext.Games.FindAsync(id);
             if (game is null) return Results.NotFound();
 
-            FileHelpers.DeleteImage(game.ImageUrl); // 🔥 Clean and reusable
+            FileHelpers.DeleteImage(game.ImageUrl);
 
             dbContext.Games.Remove(game);
-            await dbContext.SaveChangesAsync();
+            try
+            {
+                await dbContext.SaveChangesAsync();
+                logger.LogInformation("Deleted Game: {Id}", id);
+
+            }
+            catch (DbUpdateException error)
+            {
+                logger.LogError(error, "DB error while deleting game: {Id}", id);
+                return Results.Problem("A database error occurred. Please try again.");
+            }
 
             return Results.NoContent();
         });
