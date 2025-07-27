@@ -26,7 +26,7 @@ public class OnlyAppLogger : ILogger
 
         var message = formatter(state, exception);
         var timestamp = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss.fffzzz");
-        var logLine = $"{timestamp} [{logLevel}] {message}";
+        var logLine = $"{timestamp}\t[{logLevel}]\t{message}";
 
         var logFilePath = Path.Combine("Logs", $"gamestore-{DateTime.Now:dd-MM-yy}.log");
         Directory.CreateDirectory(Path.GetDirectoryName(logFilePath)!);

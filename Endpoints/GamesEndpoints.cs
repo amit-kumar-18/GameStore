@@ -45,7 +45,7 @@ public static class GamesEndpoints
 
             if (dto.Image is not null)
             {
-                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
+                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image, logger);
                 if (error is not null)
                 {
                     logger.LogWarning("Image upload failed for game: {Name}", dto.Name);
@@ -94,7 +94,7 @@ public static class GamesEndpoints
             {
                 FileHelpers.DeleteImage(existingGame.ImageUrl);
 
-                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image);
+                var (url, error) = await FileHelpers.SaveImageAsync(dto.Image, logger);
                 if (error is not null)
                 {
                     logger.LogWarning("Image upload failed for game: {Name}", dto.Name);
@@ -147,7 +147,6 @@ public static class GamesEndpoints
 
             return Results.NoContent();
         });
-
 
         return group;
     }

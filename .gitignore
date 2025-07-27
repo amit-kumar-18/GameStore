@@ -143,6 +143,8 @@ AutoTest.Net/
 _NCrunch_*
 .*crunch*.local.xml
 nCrunchTemp_*
+*.http
+*.jpg
 
 # ===========================
 # Azure / Cloud / Others
