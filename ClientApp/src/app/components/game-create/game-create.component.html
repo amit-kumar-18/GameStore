@@ -39,6 +39,30 @@
     "
   />
 
+  <input formControlName="publisher" placeholder="Game Publisher" type="text" />
+
+  <div *ngIf="selectedImage" class="image-preview">
+    <p>Current Image:</p>
+    <img
+      [src]="selectedImage"
+      alt="Game Image"
+      style="width: 150px; height: auto; border-radius: 8px"
+    />
+  </div>
+
+  <input
+    formControlName="image"
+    type="file"
+    accept="image/*"
+    (change)="onImageSelected($event)"
+  />
+
+  <textarea
+    formControlName="description"
+    rows="5"
+    placeholder="Game Description"
+  ></textarea>
+
   <button type="submit" [disabled]="gameForm.invalid">
     {{ formTitle.includes("Edit") ? "Update Game" : "Add Game" }}
   </button>

@@ -6,5 +6,9 @@
   "/genre": {
     "target": "http://localhost:5094",
     "secure": false
+  },
+  "/images": {
+    "target": "http://localhost:5094",
+    "secure": false
   }
 }

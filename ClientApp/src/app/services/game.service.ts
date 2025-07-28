@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   GameCreate,
+  GameDetail,
   GameDetails,
   GameUpdate,
   GenreDetails,
@@ -23,17 +24,17 @@ export class GameService {
   }
 
   // GET /games/#id
-  getGame(id: number): Observable<GameUpdate> {
-    return this.http.get<GameUpdate>(`${this.baseUrl}/${id}`);
+  getGame(id: number): Observable<GameDetail> {
+    return this.http.get<GameDetail>(`${this.baseUrl}/${id}`);
   }
 
   // POST /game
-  addGame(game: GameCreate): Observable<GameCreate> {
+  addGame(game: FormData): Observable<GameCreate> {
     return this.http.post<GameCreate>(this.baseUrl, game);
   }
 
   // PUT /game/#id
-  updateGame(game: GameUpdate, id: number): Observable<void> {
+  updateGame(game: FormData, id: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/${id}`, game);
   }
 

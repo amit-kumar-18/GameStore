@@ -124,6 +124,7 @@ ClientApp/dist/
 
 .env
 .env.*
+environments/
 
 # ===========================
 # Coverage & Testing
@@ -185,7 +186,6 @@ Migrations/
 /tmp
 /out-tsc
 /bazel-out
-.angular/
 
 # Node
 /node_modules

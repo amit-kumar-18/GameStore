@@ -6,11 +6,17 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { GenreDetails, GameCreate, GameUpdate } from '../../models/game.model';
+import {
+  GenreDetails,
+  GameUpdate,
+  GameDetails,
+  GameDetail,
+} from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+  standalone: true,
   selector: 'app-game-update',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: '../game-create/game-create.component.html',
@@ -21,6 +27,7 @@ export class GameUpdateComponent implements OnInit {
   genres: GenreDetails[] = [];
   gameId!: number;
   formTitle = 'Edit Game';
+  selectedImage!: File | string;
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +47,9 @@ export class GameUpdateComponent implements OnInit {
         [Validators.required, Validators.min(0), Validators.max(500)],
       ],
       releaseDate: ['', Validators.required],
+      image: [null],
+      publisher: [''],
+      description: [''],
     });
 
     this.loadGenres();
@@ -55,28 +65,41 @@ export class GameUpdateComponent implements OnInit {
   }
 
   loadGameDetails(): void {
-    this.gameService.getGame(this.gameId).subscribe((game: GameUpdate) => {
+    this.gameService.getGame(this.gameId).subscribe((game: GameDetail) => {
       this.gameForm.patchValue({
         name: game.name,
         genreId: game.genreId,
         price: game.price,
         releaseDate: game.releaseDate,
+        description: game.description,
+        publisher: game.publisher,
       });
+      this.selectedImage = game.imageUrl;
     });
+  }
+
+  // Triggered when a file is selected
+  onImageSelected(event: any): void {
+    if (event.target.files && event.target.files.length > 0) {
+      this.selectedImage = event.target.files[0];
+    }
   }
 
   submit(): void {
     if (this.gameForm.valid) {
-      const game: GameCreate = {
-        name: this.gameForm.value.name.trim(),
-        genreId: Number.parseInt(this.gameForm.value.genreId),
-        price: parseFloat(this.gameForm.value.price),
-        releaseDate: this.gameForm.value.releaseDate,
-      };
+      const formData = new FormData();
+      formData.append('name', this.gameForm.value.name.trim());
+      formData.append('genreId', this.gameForm.value.genreId);
+      formData.append('price', this.gameForm.value.price);
+      formData.append('releaseDate', this.gameForm.value.releaseDate);
+      formData.append('image', this.selectedImage);
+      formData.append('description', this.gameForm.value.description);
+      formData.append('publisher', this.gameForm.value.publisher);
 
-      this.gameService.updateGame(game, this.gameId).subscribe(() => {
+      this.gameService.updateGame(formData, this.gameId).subscribe(() => {
         alert('Game Updated successfully');
         this.gameForm.reset();
+        this.router.navigate(['/games']);
       });
     }
   }

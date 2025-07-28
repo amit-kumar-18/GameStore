@@ -1,3 +1,19 @@
+:root {
+  --primary-color: #4f46e5;
+  --secondary-color: #6366f1;
+  --bg-color: #f9fafb;
+  --text-color: #1f2937;
+  --card-bg: #ffffff;
+  --border-radius: 16px;
+  --transition: all 0.3s ease-in-out;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
 /* Header Bar Layout */
 .header-bar {
   display: flex;

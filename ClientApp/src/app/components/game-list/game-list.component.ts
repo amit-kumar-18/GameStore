@@ -4,10 +4,12 @@ import { GameService } from '../../services/game.service';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { UtcToIstPipe } from '../../utc-to-ist.pipe';
 
 @Component({
+  standalone: true,
   selector: 'app-game-list',
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, UtcToIstPipe],
   templateUrl: './game-list.component.html',
   styleUrl: './game-list.component.css',
 })
