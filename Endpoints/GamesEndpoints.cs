@@ -35,7 +35,7 @@ public static class GamesEndpoints
 
         // POST /games
         group.MapPost("/", async (
-            [FromForm] CreateGameWithImageDto dto,
+            [FromForm] CreateGameDto dto,
             GameStoreContext dbContext,
             ILogger<Game> logger
             ) =>
@@ -77,9 +77,9 @@ public static class GamesEndpoints
         }).DisableAntiforgery();
 
         // PUT /games/{id}
-        group.MapPut("/{id}", async (
+        group.MapPatch("/{id}", async (
             int id,
-            [FromForm] UpdateGameWithImageDto dto,
+            [FromForm] UpdateGameDto dto,
             GameStoreContext dbContext,
             ILogger<Game> logger
             ) =>

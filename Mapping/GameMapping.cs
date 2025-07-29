@@ -5,22 +5,7 @@ namespace GameStore.Api.Mapping;
 
 public static class GameMapping
 {
-    public static Game ToEntity(this CreateGameDto game)
-    {
-        return new Game()
-        {
-            Name = game.Name,
-            GenreId = game.GenreId,
-            Price = game.Price,
-            ReleaseDate = game.ReleaseDate,
-            ImageUrl = game.ImageUrl,
-            Description = game.Description,
-            Publisher = game.Publisher,
-            CreatedAt = DateTime.UtcNow
-        };
-    }
-
-    public static Game ToEntity(this CreateGameWithImageDto game, string? imageUrl)
+    public static Game ToEntity(this CreateGameDto game, string? imageUrl)
     {
         return new Game
         {
@@ -35,44 +20,15 @@ public static class GameMapping
         };
     }
 
-    public static void UpdateEntity(this Game game, UpdateGameWithImageDto dto, string? imageUrl = null)
+    public static void UpdateEntity(this Game game, UpdateGameDto dto, string? imageUrl = null)
     {
-        game.Name = dto.Name;
-        game.GenreId = dto.GenreId;
-        game.Price = dto.Price;
-        game.ReleaseDate = dto.ReleaseDate;
-        game.Description = dto.Description;
-        game.Publisher = dto.Publisher;
-
-        if (imageUrl is not null)
-        {
-            game.ImageUrl = imageUrl;
-        }
-    }
-
-
-    public static void UpdateEntity(this Game game, UpdateGameDto updatedGame)
-    {
-        if (updatedGame.Name is not null)
-            game.Name = updatedGame.Name;
-
-        if (updatedGame.GenreId.HasValue)
-            game.GenreId = updatedGame.GenreId.Value;
-
-        if (updatedGame.Price.HasValue)
-            game.Price = updatedGame.Price.Value;
-
-        if (updatedGame.ReleaseDate.HasValue)
-            game.ReleaseDate = updatedGame.ReleaseDate.Value;
-
-        if (updatedGame.ImageUrl is not null)
-            game.ImageUrl = updatedGame.ImageUrl;
-
-        if (updatedGame.Description is not null)
-            game.Description = updatedGame.Description;
-
-        if (updatedGame.Publisher is not null)
-            game.Publisher = updatedGame.Publisher;
+        if (!string.IsNullOrWhiteSpace(dto.Name)) game.Name = dto.Name;
+        if (dto.GenreId.HasValue) game.GenreId = dto.GenreId.Value;
+        if (dto.Price.HasValue) game.Price = dto.Price.Value;
+        if (dto.ReleaseDate.HasValue) game.ReleaseDate = dto.ReleaseDate.Value;
+        if (!string.IsNullOrWhiteSpace(dto.Description)) game.Description = dto.Description;
+        if (!string.IsNullOrWhiteSpace(dto.Publisher)) game.Publisher = dto.Publisher;
+        if (imageUrl is not null) game.ImageUrl = imageUrl;
 
         game.UpdatedAt = DateTime.UtcNow;
     }
