@@ -1,70 +1,122 @@
-<div class="filters">
-  <input
-    type="text"
-    [(ngModel)]="searchTerm"
-    (ngModelChange)="applyFilters()"
-    placeholder="Search by Game"
-  />
-
-  <select [(ngModel)]="selectedGenre" (change)="applyFilters()">
-    <option value="">All Genres</option>
-    <option *ngFor="let genre of genres" [value]="genre.name">
-      {{ genre.name }}
-    </option>
-  </select>
-
-  <input
-    type="number"
-    [(ngModel)]="maxPrice"
-    (ngModelChange)="applyFilters()"
-    placeholder="Max Price"
-  />
-  <button type="button" (click)="resetFilters()">Reset Filters</button>
-</div>
-
-<div class="game-cards-container">
-  <div class="game-card" *ngFor="let game of filteredGames">
-    <div class="game-card-header">
-      <img
-        [src]="game.imageUrl || 'placeholder.jpg'"
-        alt="{{ game.name }}"
-        class="game-card-image"
+<!-- Filters -->
+<div class="max-w-7xl mx-auto py-3">
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+    <!-- Search Bar -->
+    <div class="md:col-span-2 lg:col-span-2">
+      <label for="search" class="block text-sm font-medium text-gray-400 mb-1"
+        >Search by Game Name</label
+      >
+      <input
+        type="text"
+        id="search"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="applyFilters()"
+        placeholder="e.g., Cyberpunk 2077"
+        class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-500"
       />
-      <h3 class="game-card-title">{{ game.name }}</h3>
     </div>
-
-    <div class="game-card-body">
-      <p class="game-card-detail"><strong>Genre:</strong> {{ game.genre }}</p>
-      <p class="game-card-detail game-card-price">
-        <strong>Price:</strong> ₹{{ game.price }}
-      </p>
-      <p class="game-card-detail">
-        <strong>Release Date:</strong>
-        {{ game.releaseDate | date : "mediumDate" }}
-      </p>
-      <p class="game-card-detail">
-        <strong>Publisher:</strong> {{ game.publisher }}
-      </p>
-      <p class="game-card-description">{{ game.description }}</p>
+    <!-- Genre Filter -->
+    <div class="lg:col-span-1">
+      <label
+        for="genre-filter"
+        class="block text-sm font-medium text-gray-400 mb-1"
+        >Genre</label
+      >
+      <select
+        id="genre-filter"
+        [(ngModel)]="selectedGenre"
+        (change)="applyFilters()"
+        class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+      >
+        <option value="">All Genres</option>
+        <option *ngFor="let genre of genres" [value]="genre.name">
+          {{ genre.name }}
+        </option>
+      </select>
     </div>
-
-    <div class="game-card-footer">
-      <div class="game-card-meta">
-        <span class="meta-item" *ngIf="game.createdAt">
-          Created: {{ game.createdAt | utcToIst }} ST
-        </span>
-        <span class="meta-item" *ngIf="game.updatedAt">
-          Updated: {{ game.updatedAt | utcToIst }} IST
-        </span>
-      </div>
-      <div class="game-card-actions">
-        <button class="btn btn-edit" (click)="editGame(game.id)">
-          <span class="icon">✏️</span> Edit
-        </button>
-        <button class="btn btn-delete" (click)="deleteGame(game.id)">
-          <span class="icon">🗑️</span> Delete
-        </button>
-      </div>
+    <!-- Max Price Filter -->
+    <div class="lg:col-span-1">
+      <label
+        for="price-filter"
+        class="block text-sm font-medium text-gray-400 mb-1"
+        >Max Price</label
+      >
+      <input
+        type="number"
+        [(ngModel)]="maxPrice"
+        (ngModelChange)="applyFilters()"
+        id="price-filter"
+        placeholder="e.g., 5000"
+        class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 placeholder-gray-500"
+      />
+    </div>
+    <!-- Reset Button -->
+    <div class="lg:col-span-1">
+      <button
+        (click)="resetFilters()"
+        [disabled]="!filtersActive()"
+        [ngClass]="{
+          'bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white cursor-pointer':
+            filtersActive(),
+          'bg-gray-600 text-gray-300 cursor-not-allowed': !filtersActive()
+        }"
+        class="w-full font-bold py-2 px-6 rounded-lg transition-colors duration-200"
+      >
+        Reset Filters
+      </button>
     </div>
   </div>
 </div>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+  <h1
+    class="text-2xl sm:text-3xl lg:text-5xl font-extrabold text-center mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 tracking-tighter drop-shadow-lg leading-tight"
+  >
+    Your Library
+  </h1>
+
+  <div
+    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-10"
+  >
+    <div
+      class="game-card bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border-2 border-gray-700 cursor-pointer transform hover:scale-105 transition-transform duration-300 relative group"
+      *ngFor="let game of filteredGames"
+      (click)="showGameDetails(game)"
+    >
+      <div class="relative overflow-hidden">
+        <div class="relative overflow-hidden h-[350px]">
+          <img
+            [src]="game.imageUrl"
+            [alt]="game.name"
+            class="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          />
+        </div>
+        <div
+          class="absolute inset-0 bg-black opacity-20 group-hover:opacity-0 transition-opacity duration-300"
+        ></div>
+      </div>
+
+      <div class="py-4 px-5 flex flex-col justify-between h-[120px]">
+        <div>
+          <h2 class="font-extrabold text-xl mb-1 text-white truncate">
+            {{ game.name }}
+          </h2>
+          <p class="text-sm text-gray-400">{{ game.genre }}</p>
+        </div>
+        <div class="flex justify-between items-center mt-auto">
+          <span
+            class="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-teal-400"
+          >
+            ₹{{ game.price }}
+          </span>
+          <button
+            class="bg-purple-600 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform scale-75 group-hover:scale-100"
+            aria-label="Add to cart"
+          >
+            <i class="fas fa-shopping-cart text-base"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

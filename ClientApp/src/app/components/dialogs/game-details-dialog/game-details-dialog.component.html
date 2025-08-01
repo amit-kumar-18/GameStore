@@ -1,0 +1,89 @@
+<div
+  class="bg-gray-900 p-8 rounded-2xl shadow-2xl w-[90vw] max-w-5xl"
+  cdkFocusInitial
+>
+  <div
+    class="relative w-full h-full p-px rounded-2xl bg-gradient-to-r from-purple-500 to-pink-500 shadow-lg"
+  >
+    <div class="bg-gray-900 rounded-2xl p-8 space-y-6">
+      <div class="flex justify-between items-start mb-6">
+        <h3
+          class="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 tracking-tight"
+        >
+          {{ data.game.name }}
+        </h3>
+        <button
+          class="text-gray-500 hover:text-white text-3xl transition-transform transform hover:rotate-90 duration-300"
+          mat-icon-button
+          mat-dialog-close
+        >
+          <i class="fas fa-times-circle"></i>
+        </button>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-8">
+        <div class="md:w-1/2 max-w-full">
+          <img
+            [src]="data.game.imageUrl"
+            [alt]="data.game.name"
+            class="w-full h-auto rounded-xl shadow-2xl object-cover"
+          />
+        </div>
+        <div class="md:w-1/2 flex flex-col justify-between">
+          <div>
+            <div class="mb-4">
+              <p class="text-lg text-gray-400 font-medium">
+                Genre: <span class="text-white">{{ data.game.genre }}</span>
+              </p>
+              <p class="text-sm text-gray-500">
+                Publisher:
+                <span class="text-gray-300">{{ data.game.publisher }}</span>
+              </p>
+            </div>
+
+            <p class="text-3xl font-extrabold text-white mb-6">
+              ₹{{ data.game.price }}
+            </p>
+
+            <h3 class="font-bold text-xl mb-2 text-white">Description</h3>
+            <p class="text-gray-300 leading-relaxed mb-6">
+              {{ data.game.description }}
+            </p>
+
+            <div
+              class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm border-t border-gray-700 pt-4"
+            >
+              <div>
+                <span class="font-semibold text-gray-400">Created:</span>
+                <p class="text-gray-200">
+                  {{ data.game.createdAt | utcToIst }}
+                </p>
+              </div>
+              <div>
+                <span class="font-semibold text-gray-400">Last Updated:</span>
+                <p class="text-gray-200">
+                  {{ data.game.updatedAt! | utcToIst }}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row gap-4 mt-8">
+            <button
+              class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-200 shadow-lg"
+              (click)="data.onEdit(data.game.id); onNoClick()"
+            >
+              <i class="fas fa-edit mr-2"></i> Edit Game
+            </button>
+            <button
+              class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-colors duration-200 shadow-lg"
+              (click)="data.onDelete(data.game.id); onNoClick()"
+            >
+              <i class="fas fa-trash-alt mr-2"></i> Delete Game
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

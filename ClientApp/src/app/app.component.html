@@ -1,13 +1,177 @@
-<header class="header-bar">
-  <div class="logo-title">
-    <img src="gamestore-logo.png" alt="Logo" class="logo" />
-    <h1>GameStore</h1>
-  </div>
+<header
+  class="bg-gradient-to-b from-gray-900 to-gray-800 py-3 px-8 shadow-lg sticky top-0 z-50"
+>
+  <nav class="flex justify-between items-center max-w-7xl mx-auto flex-wrap">
+    <div class="flex items-center space-x-3">
+      <i class="fa-solid fa-gamepad text-2xl text-white"></i>
+      <a [routerLink]="'/'">
+        <span
+          class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600"
+        >
+          {{ title }}
+        </span>
+      </a>
+    </div>
 
-  <nav class="nav-links">
-    <a routerLink="/games">Games</a>
-    <a routerLink="/addGame">Add Game</a>
+    <button
+      class="text-gray-300 hover:text-white md:hidden focus:outline-none"
+      aria-label="Toggle navigation"
+      (click)="toggleMenu()"
+    >
+      <i class="fas fa-bars text-xl"></i>
+    </button>
+
+    <div
+      [ngClass]="{
+        'flex w-full mt-4 flex-col': isMenuOpen,
+        'hidden md:flex md:flex-row md:items-center md:space-x-6 md:w-auto md:mt-0':
+          !isMenuOpen
+      }"
+      class="md:flex-row md:items-center md:space-x-6 md:w-auto md:mt-0"
+    >
+      <a
+        [routerLink]="'/addGame'"
+        class="text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-700"
+        [ngClass]="{ 'block text-lg text-center my-2': isMenuOpen }"
+        aria-label="Add Game"
+        matTooltip="Add Games"
+      >
+        <i class="fas fa-plus text-xl mr-2"></i>
+        <span class="md:hidden">Add Game</span>
+      </a>
+      <a
+        [routerLink]="'/games'"
+        class="text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-700"
+        [ngClass]="{ 'block text-lg text-center my-2': isMenuOpen }"
+        aria-label="List Games"
+        matTooltip="List Games"
+      >
+        <i class="fas fa-list text-xl mr-2"></i>
+        <span class="md:hidden">List Games</span>
+      </a>
+      <a
+        href="#"
+        class="text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-700"
+        [ngClass]="{ 'block text-lg text-center my-2': isMenuOpen }"
+        aria-label="Shopping Cart"
+        matTooltip="Cart"
+      >
+        <i class="fas fa-shopping-cart text-xl mr-2"></i>
+        <span class="md:hidden">Cart</span>
+      </a>
+      <a
+        href="#"
+        class="text-gray-300 hover:text-white transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-gray-700"
+        [ngClass]="{ 'block text-lg text-center my-2': isMenuOpen }"
+        aria-label="User Profile"
+        matTooltip="Account"
+      >
+        <i class="fas fa-user-circle text-xl mr-2"></i>
+        <span class="md:hidden">Account</span>
+      </a>
+    </div>
   </nav>
 </header>
 
 <router-outlet></router-outlet>
+
+<!-- Footer Section -->
+<footer
+  class="bg-gray-900 text-gray-400 mt-10 py-12 px-4 sm:px-6 lg:px-8 border-t border-gray-700"
+>
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+    <!-- Footer Column 1: Logo and About -->
+    <div>
+      <div class="flex items-center space-x-3 mb-4">
+        <i class="fa-solid fa-gamepad text-3xl text-white"></i>
+        <span class="text-2xl font-bold text-white">GameStore</span>
+      </div>
+      <p class="text-sm">
+        Your ultimate destination for discovering and purchasing your next
+        favorite game.
+      </p>
+    </div>
+
+    <!-- Footer Column 2: Links -->
+    <div class="grid grid-cols-2 gap-8">
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-white">Company</h4>
+        <ul>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >About Us</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >Careers</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-lg mb-4 text-white">Support</h4>
+        <ul>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >Help Center</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >Privacy Policy</a
+            >
+          </li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors duration-200"
+              >Terms of Service</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Footer Column 3: Social Media -->
+    <div class="flex flex-col items-start md:items-end">
+      <h4 class="font-bold text-lg mb-4 text-white">Follow Us</h4>
+      <div class="flex space-x-4">
+        <a
+          href="#"
+          class="text-gray-400 hover:text-white transition-colors duration-200"
+          aria-label="Twitter"
+        >
+          <i class="fab fa-twitter text-xl"></i>
+        </a>
+        <a
+          href="#"
+          class="text-gray-400 hover:text-white transition-colors duration-200"
+          aria-label="Facebook"
+        >
+          <i class="fab fa-facebook-f text-xl"></i>
+        </a>
+        <a
+          href="#"
+          class="text-gray-400 hover:text-white transition-colors duration-200"
+          aria-label="Instagram"
+        >
+          <i class="fab fa-instagram text-xl"></i>
+        </a>
+        <a
+          href="#"
+          class="text-gray-400 hover:text-white transition-colors duration-200"
+          aria-label="YouTube"
+        >
+          <i class="fab fa-youtube text-xl"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="mt-8 pt-8 border-t border-gray-700 text-center text-sm">
+    &copy; {{ currentYear }} GameStore. All rights reserved.
+  </div>
+</footer>

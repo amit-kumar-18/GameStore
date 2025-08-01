@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+@import "tailwindcss";
+
+:root {
+  --background-dark: #1a202c;
+  --foreground-dark: #e0e0e0;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Inter, "Helvetica Neue", sans-serif;
+  background-color: var(--background-dark);
+}
+
+input[type="number"] {
+  flex: 1 1 auto;
+  min-width: 120px;
+  -moz-appearance: textfield; /* for firefox */
+}
+
+/* hiding the arrows on input number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

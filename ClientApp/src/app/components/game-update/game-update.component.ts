@@ -85,6 +85,13 @@ export class GameUpdateComponent implements OnInit {
     }
   }
 
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
   submit(): void {
     if (this.gameForm.valid) {
       const formData = new FormData();

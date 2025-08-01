@@ -1,0 +1,20 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { Router, RouterModule } from '@angular/router';
+
+@Component({
+  selector: 'app-landing-page',
+  imports: [RouterModule, MatTooltipModule, FormsModule],
+  templateUrl: './landing-page.component.html',
+  styleUrl: './landing-page.component.css',
+})
+export class LandingPageComponent {
+  title = 'GameStore';
+
+  constructor(private router: Router) {}
+
+  navigateToGames() {
+    this.router.navigate(['/games']);
+  }
+}

@@ -79,4 +79,11 @@ export class GameCreateComponent implements OnInit {
   showGames(): void {
     this.router.navigate(['/games']);
   }
+
+  allowOnlyNumbers(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
 }

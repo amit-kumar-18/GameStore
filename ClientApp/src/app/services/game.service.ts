@@ -35,7 +35,7 @@ export class GameService {
 
   // PUT /game/#id
   updateGame(game: FormData, id: number): Observable<void> {
-    return this.http.put<void>(`${this.baseUrl}/${id}`, game);
+    return this.http.patch<void>(`${this.baseUrl}/${id}`, game);
   }
 
   // DELETE /game/#id
