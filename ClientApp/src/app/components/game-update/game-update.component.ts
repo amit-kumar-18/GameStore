@@ -9,6 +9,8 @@ import {
 import { GenreDetails, GameDetail } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
@@ -28,7 +30,8 @@ export class GameUpdateComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private route: ActivatedRoute,
-    private gameService: GameService
+    private gameService: GameService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -107,7 +110,12 @@ export class GameUpdateComponent implements OnInit {
       formData.append('publisher', this.gameForm.value.publisher);
 
       this.gameService.updateGame(formData, this.gameId).subscribe(() => {
-        alert('Game Updated successfully');
+        this.dialog.open(SuccessDialogComponent, {
+          data: {
+            title: 'Success!',
+            message: 'Your game has been updated successfully.',
+          },
+        });
         this.gameForm.reset();
         this.router.navigate(['/games']);
       });

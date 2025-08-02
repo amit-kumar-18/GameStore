@@ -83,7 +83,6 @@ export class GameCreateComponent implements OnInit {
             title: 'Success!',
             message: 'Your game has been added successfully.',
           },
-          panelClass: 'custom-dialog-container',
         });
         this.gameForm.reset();
         this.router.navigate(['/games']);

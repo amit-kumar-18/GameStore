@@ -37,9 +37,17 @@ export class GameListComponent implements OnInit {
   }
 
   loadGames(): void {
-    this.gameService.getGames().subscribe((data) => {
-      this.games = data;
-      this.applyFilters();
+    this.gameService.getGames().subscribe({
+      next: (data) => {
+        this.games = data.map((game: GameDetails) => ({
+          ...game,
+          imageUrl: game.imageUrl?.trim() ? game.imageUrl : './not-found.png',
+        }));
+        this.applyFilters();
+      },
+      error: (err) => {
+        console.error('Error loading games:', err);
+      },
     });
   }
 
