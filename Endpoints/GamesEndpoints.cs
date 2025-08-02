@@ -84,7 +84,7 @@ public static class GamesEndpoints
             ILogger<Game> logger
             ) =>
         {
-            logger.LogInformation("Updating game: {Name}", dto.Name);
+            logger.LogInformation("Updating game: {Name}", dto.Name ?? "Unknown");
             var existingGame = await dbContext.Games.FindAsync(id);
             if (existingGame is null) return Results.NotFound();
 

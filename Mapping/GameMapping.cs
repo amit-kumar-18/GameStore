@@ -22,16 +22,30 @@ public static class GameMapping
 
     public static void UpdateEntity(this Game game, UpdateGameDto dto, string? imageUrl = null)
     {
-        if (!string.IsNullOrWhiteSpace(dto.Name)) game.Name = dto.Name;
-        if (dto.GenreId.HasValue) game.GenreId = dto.GenreId.Value;
-        if (dto.Price.HasValue) game.Price = dto.Price.Value;
-        if (dto.ReleaseDate.HasValue) game.ReleaseDate = dto.ReleaseDate.Value;
-        if (!string.IsNullOrWhiteSpace(dto.Description)) game.Description = dto.Description;
-        if (!string.IsNullOrWhiteSpace(dto.Publisher)) game.Publisher = dto.Publisher;
-        if (imageUrl is not null) game.ImageUrl = imageUrl;
+        if (!string.IsNullOrWhiteSpace(dto.Name))
+            game.Name = dto.Name;
+
+        if (dto.GenreId is int genreId)
+            game.GenreId = genreId;
+
+        if (dto.Price is decimal price)
+            game.Price = price;
+
+        if (dto.ReleaseDate is DateOnly releaseDate)
+            game.ReleaseDate = releaseDate;
+
+        if (!string.IsNullOrWhiteSpace(dto.Description))
+            game.Description = dto.Description;
+
+        if (!string.IsNullOrWhiteSpace(dto.Publisher))
+            game.Publisher = dto.Publisher;
+
+        if (!string.IsNullOrWhiteSpace(imageUrl))
+            game.ImageUrl = imageUrl;
 
         game.UpdatedAt = DateTime.UtcNow;
     }
+
 
     public static GameSummaryDto ToGameSummaryDto(this Game game)
     {
