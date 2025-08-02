@@ -13,7 +13,6 @@ import { UtcToIstPipe } from '../../../utc-to-ist.pipe';
   selector: 'app-game-details-dialog',
   imports: [UtcToIstPipe, MatDialogModule],
   templateUrl: './game-details-dialog.component.html',
-  styleUrl: './game-details-dialog.component.css',
 })
 export class GameDetailsDialogComponent {
   constructor(

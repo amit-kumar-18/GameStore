@@ -18,7 +18,9 @@ body {
 input[type="number"] {
   flex: 1 1 auto;
   min-width: 120px;
-  -moz-appearance: textfield; /* for firefox */
+  /*for firefox*/
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 
 /* hiding the arrows on input number */

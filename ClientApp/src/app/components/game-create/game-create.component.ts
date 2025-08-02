@@ -9,24 +9,27 @@ import {
 import { GenreDetails } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { Router } from '@angular/router';
+import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   standalone: true,
   selector: 'app-game-create',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './game-create.component.html',
-  styleUrl: './game-create.component.css',
 })
 export class GameCreateComponent implements OnInit {
   gameForm!: FormGroup;
   genres: GenreDetails[] = [];
   formTitle = 'Add Game';
-  selectedImage!: File | string;
+  selectedImageFile!: File | null;
+  selectedImagePreview!: string | null;
 
   constructor(
     private fb: FormBuilder,
     private gameService: GameService,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -52,8 +55,15 @@ export class GameCreateComponent implements OnInit {
 
   // Triggered when a file is selected
   onImageSelected(event: any): void {
-    if (event.target.files && event.target.files.length > 0) {
-      this.selectedImage = event.target.files[0];
+    const file: File = event.target.files[0];
+    if (file) {
+      this.selectedImageFile = file;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.selectedImagePreview = reader.result as string;
+      };
+      reader.readAsDataURL(file);
     }
   }
 
@@ -64,12 +74,20 @@ export class GameCreateComponent implements OnInit {
       formData.append('genreId', this.gameForm.value.genreId);
       formData.append('price', this.gameForm.value.price);
       formData.append('releaseDate', this.gameForm.value.releaseDate);
-      formData.append('image', this.selectedImage);
+      if (this.selectedImageFile !== null) {
+        formData.append('image', this.selectedImageFile);
+      }
       formData.append('description', this.gameForm.value.description);
       formData.append('publisher', this.gameForm.value.publisher);
 
       this.gameService.addGame(formData).subscribe(() => {
-        alert('Game added successfully');
+        this.dialog.open(SuccessDialogComponent, {
+          data: {
+            title: 'Success!',
+            message: 'Your game has been added successfully.',
+          },
+          panelClass: 'custom-dialog-container',
+        });
         this.gameForm.reset();
         this.router.navigate(['/games']);
       });
@@ -81,8 +99,21 @@ export class GameCreateComponent implements OnInit {
   }
 
   allowOnlyNumbers(event: KeyboardEvent) {
-    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
-    if (!/^[0-9]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+    const allowedKeys = [
+      'Backspace',
+      'ArrowLeft',
+      'ArrowRight',
+      'Tab',
+      'Delete',
+    ];
+    const input = event.target as HTMLInputElement;
+
+    if (
+      (!/^[0-9]$/.test(event.key) &&
+        event.key !== '.' &&
+        !allowedKeys.includes(event.key)) ||
+      (event.key === '.' && input.value.includes('.'))
+    ) {
       event.preventDefault();
     }
   }

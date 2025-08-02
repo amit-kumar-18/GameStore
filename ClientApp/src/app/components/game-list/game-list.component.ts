@@ -14,7 +14,6 @@ import { SuccessDialogComponent } from '../dialogs/success-dialog/success-dialog
   selector: 'app-game-list',
   imports: [CommonModule, FormsModule, RouterModule, ReactiveFormsModule],
   templateUrl: './game-list.component.html',
-  styleUrl: './game-list.component.css',
 })
 export class GameListComponent implements OnInit {
   games: GameDetails[] = [];
@@ -60,9 +59,8 @@ export class GameListComponent implements OnInit {
         onDelete: (id: number) => this.confirmDelete(id),
       },
       width: '90vw',
-      maxWidth: '69vw',
+      maxWidth: 'fit-content',
       autoFocus: false,
-      panelClass: 'game-details-dialog-container',
     });
   }
 

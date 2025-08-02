@@ -5,7 +5,6 @@ import {
   GameCreate,
   GameDetail,
   GameDetails,
-  GameUpdate,
   GenreDetails,
 } from '../models/game.model';
 

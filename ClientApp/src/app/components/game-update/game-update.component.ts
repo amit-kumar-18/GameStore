@@ -6,12 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  GenreDetails,
-  GameUpdate,
-  GameDetails,
-  GameDetail,
-} from '../../models/game.model';
+import { GenreDetails, GameDetail } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -20,14 +15,14 @@ import { ActivatedRoute, Router } from '@angular/router';
   selector: 'app-game-update',
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: '../game-create/game-create.component.html',
-  styleUrl: '../game-create/game-create.component.css',
 })
 export class GameUpdateComponent implements OnInit {
   gameForm!: FormGroup;
   genres: GenreDetails[] = [];
   gameId!: number;
   formTitle = 'Edit Game';
-  selectedImage!: File | string;
+  selectedImageFile!: File | null;
+  selectedImagePreview!: string | null;
 
   constructor(
     private fb: FormBuilder,
@@ -74,14 +69,23 @@ export class GameUpdateComponent implements OnInit {
         description: game.description,
         publisher: game.publisher,
       });
-      this.selectedImage = game.imageUrl;
+      this.selectedImagePreview = game.imageUrl;
     });
   }
 
   // Triggered when a file is selected
   onImageSelected(event: any): void {
     if (event.target.files && event.target.files.length > 0) {
-      this.selectedImage = event.target.files[0];
+      const file: File = event.target.files[0];
+      if (file) {
+        this.selectedImageFile = file;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.selectedImagePreview = reader.result as string;
+        };
+        reader.readAsDataURL(file);
+      }
     }
   }
 
@@ -99,7 +103,9 @@ export class GameUpdateComponent implements OnInit {
       formData.append('genreId', this.gameForm.value.genreId);
       formData.append('price', this.gameForm.value.price);
       formData.append('releaseDate', this.gameForm.value.releaseDate);
-      formData.append('image', this.selectedImage);
+      if (this.selectedImageFile !== null) {
+        formData.append('image', this.selectedImageFile);
+      }
       formData.append('description', this.gameForm.value.description);
       formData.append('publisher', this.gameForm.value.publisher);
 
