@@ -37,10 +37,7 @@ export class GameUpdateComponent implements OnInit {
     this.gameForm = this.fb.group({
       name: ['', [Validators.required, Validators.maxLength(50)]],
       genreId: ['', Validators.required],
-      price: [
-        '',
-        [Validators.required, Validators.min(0), Validators.max(500)],
-      ],
+      price: ['', [Validators.required, Validators.min(0)]],
       releaseDate: ['', Validators.required],
       image: [null],
       publisher: [''],
