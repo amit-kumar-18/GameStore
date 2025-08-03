@@ -45,9 +45,6 @@ export class GameListComponent implements OnInit {
         }));
         this.applyFilters();
       },
-      error: (err) => {
-        console.error('Error loading games:', err);
-      },
     });
   }
 

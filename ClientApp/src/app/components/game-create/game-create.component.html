@@ -24,12 +24,27 @@
         <input
           type="text"
           formControlName="name"
+          #nameField
           placeholder="e.g., Cyberpunk 2077"
-          class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-          [class.border-red-500]="
-            gameForm.get('name')?.invalid && gameForm.get('name')?.touched
-          "
+          class="w-full px-4 py-2 text-gray-200 bg-gray-700 border rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              gameForm.get('name')?.invalid &&
+              (gameForm.get('name')?.touched || gameForm.get('name')?.dirty),
+            'border-gray-600':
+              gameForm.get('name')?.valid ||
+              !(gameForm.get('name')?.touched || gameForm.get('name')?.dirty)
+          }"
         />
+        <div
+          *ngIf="
+            gameForm.get('name')?.invalid &&
+            (gameForm.get('name')?.touched || gameForm.get('name')?.dirty)
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          Field is required.
+        </div>
       </div>
 
       <!-- Genre Selection -->
@@ -39,16 +54,36 @@
         >
         <select
           formControlName="genreId"
-          class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-          [class.border-red-500]="
-            gameForm.get('genreId')?.invalid && gameForm.get('genreId')?.touched
-          "
+          #genreField
+          tabindex="0"
+          class="w-full px-4 py-2 text-gray-200 bg-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          [ngClass]="{
+            'border-red-500':
+              gameForm.get('genreId')?.invalid &&
+              (gameForm.get('genreId')?.touched ||
+                gameForm.get('genreId')?.dirty),
+            'border-gray-600':
+              gameForm.get('genreId')?.valid ||
+              !(
+                gameForm.get('genreId')?.touched ||
+                gameForm.get('genreId')?.dirty
+              )
+          }"
         >
           <option value="" disabled>Select Genre</option>
           <option *ngFor="let genre of genres" [value]="genre.id">
             {{ genre.name }}
           </option>
         </select>
+        <div
+          *ngIf="
+            gameForm.get('genreId')?.invalid &&
+            (gameForm.get('genreId')?.touched || gameForm.get('genreId')?.dirty)
+          "
+          class="text-red-500 text-sm mt-1"
+        >
+          Field is required.
+        </div>
       </div>
 
       <!-- Price & Date -->
@@ -66,6 +101,7 @@
             </div>
             <input
               type="number"
+              #priceField
               formControlName="price"
               inputmode="decimal"
               pattern="^\d*\.?\d*$"
@@ -73,11 +109,29 @@
               placeholder="0.00"
               min="0.00"
               step="0.01"
-              class="w-full pl-7 pr-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
-              [class.border-red-500]="
-                gameForm.get('price')?.invalid && gameForm.get('price')?.touched
-              "
+              class="w-full pl-7 pr-4 py-2 text-gray-200 bg-gray-700 border rounded-lg placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+              [ngClass]="{
+                'border-red-500':
+                  gameForm.get('price')?.invalid &&
+                  (gameForm.get('price')?.touched ||
+                    gameForm.get('price')?.dirty),
+                'border-gray-600':
+                  gameForm.get('price')?.valid ||
+                  !(
+                    gameForm.get('price')?.touched ||
+                    gameForm.get('price')?.dirty
+                  )
+              }"
             />
+          </div>
+          <div
+            *ngIf="
+              gameForm.get('price')?.invalid &&
+              (gameForm.get('price')?.touched || gameForm.get('price')?.dirty)
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Field is required.
           </div>
         </div>
 
@@ -88,13 +142,32 @@
           >
           <input
             type="date"
+            #releaseDateField
             formControlName="releaseDate"
-            class="w-full px-4 py-2 text-gray-200 bg-gray-700 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-            [class.border-red-500]="
-              gameForm.get('releaseDate')?.invalid &&
-              gameForm.get('releaseDate')?.touched
-            "
+            class="w-full px-4 py-2 text-gray-200 bg-gray-700 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            [ngClass]="{
+              'border-red-500':
+                gameForm.get('releaseDate')?.invalid &&
+                (gameForm.get('releaseDate')?.touched ||
+                  gameForm.get('releaseDate')?.dirty),
+              'border-gray-600':
+                gameForm.get('releaseDate')?.valid ||
+                !(
+                  gameForm.get('releaseDate')?.touched ||
+                  gameForm.get('releaseDate')?.dirty
+                )
+            }"
           />
+          <div
+            *ngIf="
+              gameForm.get('releaseDate')?.invalid &&
+              (gameForm.get('releaseDate')?.touched ||
+                gameForm.get('releaseDate')?.dirty)
+            "
+            class="text-red-500 text-sm mt-1"
+          >
+            Field is required.
+          </div>
         </div>
       </div>
 
@@ -164,7 +237,6 @@
       <!-- Submit Button -->
       <button
         type="submit"
-        [disabled]="gameForm.invalid"
         class="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transform transition-transform duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50 cursor-pointer"
       >
         {{ formTitle.includes("Edit") ? "Update Game" : "Add Game" }}

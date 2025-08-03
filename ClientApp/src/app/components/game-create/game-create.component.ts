@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -64,7 +70,26 @@ export class GameCreateComponent implements OnInit {
     }
   }
 
+  @ViewChildren('nameField, priceField, genreField, releaseDateField')
+  formFields!: QueryList<ElementRef>;
+
   submit(): void {
+    if (this.gameForm.invalid) {
+      this.gameForm.markAllAsTouched();
+      // Scroll to first invalid control
+      const firstInvalidControl = this.formFields.find((field) =>
+        field.nativeElement.classList.contains('ng-invalid')
+      );
+
+      if (firstInvalidControl) {
+        firstInvalidControl.nativeElement.scrollIntoView({
+          behavior: 'smooth',
+          block: 'center',
+        });
+        firstInvalidControl.nativeElement.focus(); // Optional
+      }
+      return;
+    }
     if (this.gameForm.valid) {
       const formData = new FormData();
       formData.append('name', this.gameForm.value.name.trim());
