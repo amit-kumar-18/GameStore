@@ -5,35 +5,37 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Logging
+// Logging Configuration
 builder.Logging.AddProvider(new OnlyAppLoggerProvider());
 builder.Logging.AddFilter("GameStore", LogLevel.None);
 builder.Logging.AddFilter<OnlyAppLoggerProvider>("GameStore", LogLevel.Information);
 
-// DB connection
+// Database Configuration
 var connString = builder.Configuration.GetConnectionString("GameStore");
 builder.Services.AddSqlite<GameStoreContext>(connString);
 
 var app = builder.Build();
 
-// Global error handler
+// Global Error Middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
+// Serve static files from wwwroot/
+app.UseStaticFiles();
+
+// Production-specific: Serve Angular build from wwwroot/browser/
 if (!app.Environment.IsDevelopment())
 {
-    var clientAppPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser");
-    var fileProvider = new PhysicalFileProvider(clientAppPath);
+    var browserBuildPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser");
+    var fileProvider = new PhysicalFileProvider(browserBuildPath);
 
     app.UseDefaultFiles(new DefaultFilesOptions
     {
-        FileProvider = fileProvider,
-        RequestPath = ""
+        FileProvider = fileProvider
     });
 
     app.UseStaticFiles(new StaticFileOptions
     {
-        FileProvider = fileProvider,
-        RequestPath = ""
+        FileProvider = fileProvider
     });
 
     app.MapFallbackToFile("index.html", new StaticFileOptions
@@ -42,9 +44,10 @@ if (!app.Environment.IsDevelopment())
     });
 }
 
-
+// API Endpoints
 app.MapGamesEndpoints();
 app.MapGenresEndpoints();
 
+// DB Migration and App Run
 await app.MigrateDbAsync();
 app.Run();
