@@ -1,6 +1,7 @@
 using GameStore.Api.Data;
 using GameStore.Api.Endpoints;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +19,30 @@ var app = builder.Build();
 // Global error handler
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-app.UseStaticFiles();
+if (!app.Environment.IsDevelopment())
+{
+    var clientAppPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "browser");
+    var fileProvider = new PhysicalFileProvider(clientAppPath);
+
+    app.UseDefaultFiles(new DefaultFilesOptions
+    {
+        FileProvider = fileProvider,
+        RequestPath = ""
+    });
+
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = fileProvider,
+        RequestPath = ""
+    });
+
+    app.MapFallbackToFile("index.html", new StaticFileOptions
+    {
+        FileProvider = fileProvider
+    });
+}
+
+
 app.MapGamesEndpoints();
 app.MapGenresEndpoints();
 
