@@ -26,14 +26,14 @@ A full-stack web application to manage video games and genres, built using **ASP
 
 ## 📁 Tech Stack
 
-| Layer     | Tech Used                   |
-| --------- | --------------------------- |
-| Backend   | ASP.NET Core 8              |
-| ORM       | Entity Framework Core 8     |
-| Database  | SQLite                      |
-| Frontend  | Angular 19                  |
-| Styling   | Angular Material (optional) |
-| Dev Tools | Bash script for prod build  |
+| Layer     | Tech Used                      |
+| --------- | ------------------------------ |
+| Frontend  | Angular 19                     |
+| Backend   | ASP.NET Core 8                 |
+| ORM       | Entity Framework Core 8        |
+| Database  | SQLite                         |
+| Styling   | Angular Material & TailwindCSS |
+| Dev Tools | Bash script for prod build     |
 
 ---
 
