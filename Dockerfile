@@ -36,8 +36,4 @@ WORKDIR /app
 # Copy published output
 COPY --from=build /app/publish ./
 
-# Expose port and set env
-ENV ASPNETCORE_URLS=http://+:80
-EXPOSE 80
-
 ENTRYPOINT ["dotnet", "GameStore.Api.dll"]
